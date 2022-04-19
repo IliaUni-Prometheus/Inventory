@@ -18,11 +18,11 @@ namespace Application.Features.EmployeeFeatures.Queries
         }
         public async Task<IEnumerable<AllEmployeesQueryResult>> Handle(AllEmployeesQuery request, CancellationToken cancellationToken)
         {
-            var employees = await _db.Employees.Select(x => new AllEmployeesQueryResult
+            var employees = await _db.Orders.Select(x => new AllEmployeesQueryResult
             {
                 EmployeeId = x.EmployeeId,
-                EmployeeName = x.FirstName
-            }).ToListAsync(cancellationToken);
+                EmployeeName = x.ShipName
+            }).ToListAsync();
 
             return employees;
         }
@@ -35,7 +35,7 @@ namespace Application.Features.EmployeeFeatures.Queries
 
     public class AllEmployeesQueryResult
     {
-        public int EmployeeId { get; set; }
+        public int? EmployeeId { get; set; }
         public string EmployeeName { get; set; }
     }
 }
