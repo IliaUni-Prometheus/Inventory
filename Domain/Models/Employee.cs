@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Infrastructure.Models
+﻿namespace Infrastructure.Models
 {
     public partial class Employee
     {
@@ -14,7 +11,7 @@ namespace Infrastructure.Models
 
         public int EmployeeId { get; set; }
         public string LastName { get; set; } = null!;
-        public string FirstName { get; set; } = null!;
+        public string FirstName { get; private set; } = null!;
         public string? Title { get; set; }
         public string? TitleOfCourtesy { get; set; }
         public DateTime? BirthDate { get; set; }
@@ -36,5 +33,11 @@ namespace Infrastructure.Models
         public virtual ICollection<Order> Orders { get; set; }
 
         public virtual ICollection<Territory> Territories { get; set; }
+
+
+        public void ChangeName(string newName)
+        {
+            FirstName = newName;
+        }
     }
 }

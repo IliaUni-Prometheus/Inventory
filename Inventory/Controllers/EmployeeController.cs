@@ -1,6 +1,6 @@
-﻿using Application.Features.EmployeeFeatures.Queries;
+﻿using Application.Features.EmployeeFeatures.Commands;
+using Application.Features.EmployeeFeatures.Queries;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inventory.Controllers
@@ -20,6 +20,12 @@ namespace Inventory.Controllers
         public async Task<IActionResult> Get([FromQuery] AllEmployeesQuery query)
         {
             return Ok(_mediator.Send(query));
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> ChangeName([FromBody] ChangeEmployeeNameCommand command)
+        {
+            return Ok(_mediator.Send(command));
         }
     }
 }
