@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32319.34
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory", "Inventory\Inventory.csproj", "{E8C54E12-D10C-4AA4-8403-254A67C1A81A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inventory", "Inventory\Inventory.csproj", "{E8C54E12-D10C-4AA4-8403-254A67C1A81A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{FC1CCB13-C067-4CB3-BEDF-3949A34A803F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{FC1CCB13-C067-4CB3-BEDF-3949A34A803F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{85A0A0B9-792C-4DD3-8241-8F34E6ADD25A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{85A0A0B9-792C-4DD3-8241-8F34E6ADD25A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{3227E67A-E735-4ED2-AB4A-FFAAB3908D82}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{3227E67A-E735-4ED2-AB4A-FFAAB3908D82}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{5E5AE597-5F4D-4B8E-9E67-5A69F8908D55}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{3227E67A-E735-4ED2-AB4A-FFAAB3908D82}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3227E67A-E735-4ED2-AB4A-FFAAB3908D82}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3227E67A-E735-4ED2-AB4A-FFAAB3908D82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E5AE597-5F4D-4B8E-9E67-5A69F8908D55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E5AE597-5F4D-4B8E-9E67-5A69F8908D55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E5AE597-5F4D-4B8E-9E67-5A69F8908D55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E5AE597-5F4D-4B8E-9E67-5A69F8908D55}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
