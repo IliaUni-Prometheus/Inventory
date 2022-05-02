@@ -1,5 +1,9 @@
 using Application.Features.EmployeeFeatures.Queries;
+using Application.Helpers;
+using Application.Services.Abstract;
+using Application.Services.Concrete;
 using Infrastructure.Models;
+using Inventory.Authorization;
 using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,7 +15,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// configure strongly typed settings object
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
+// configure DI for application services
+builder.Services.AddScoped<IJwtUtils, JwtUtils>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddDbContext<NorthwindContext>();
 builder.Services.AddMediatR(typeof(AllEmployeesQueryHandler).Assembly);
 
@@ -23,6 +32,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<JwtMiddleware>();
 
 app.UseHttpsRedirection();
 
