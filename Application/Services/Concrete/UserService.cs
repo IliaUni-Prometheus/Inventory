@@ -30,5 +30,12 @@ namespace Application.Services.Concrete
 
             return new AuthenticateResponse() { Role = user.Role, Token = jwtToken };
         }
+
+        public async Task<Domain.Models.User> GetById(int value)
+        {
+            var user = await _db.Users.FindAsync(value);
+            if (user == null) throw new KeyNotFoundException("User not found");
+            return user;
+        }
     }
 }
