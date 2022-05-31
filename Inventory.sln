@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{BC945F99-37CA-4ACB-8D1B-30AAD95BE792}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientSide", "ClientSide\ClientSide.csproj", "{D9663A01-A5D1-42ED-9EC1-F4D58E8F0672}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientSide", "ClientSide\ClientSide.csproj", "{D9663A01-A5D1-42ED-9EC1-F4D58E8F0672}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

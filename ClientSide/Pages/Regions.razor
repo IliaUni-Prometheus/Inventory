@@ -1,0 +1,83 @@
+﻿@page "/regions/{Region?}"
+@using ClientSide.Data
+@inject IOrderService orderService
+
+<h3>Regions</h3>
+<h3>@(string.IsNullOrEmpty(Region) ? "WorldWide" : Region)</h3>
+<h3>@Color</h3>
+
+@foreach (var state in States)
+{
+    <h1>@state</h1>
+}
+
+<button type="button" @onclick="@Rerender">Rerender</button>
+<button type="button" @onclick="@AlertBrowser">AlertBrowser</button>
+<button type="button" @onclick="@SetColor">SetColor</button>
+<button type="button" @onclick="@GetColor">GetColor</button>
+
+@code {
+
+    [Parameter]
+    public string? Region { get; set; }
+
+    public string Color { get; set; } = "Blue";
+
+    [Inject]
+    public IJSRuntime JSRuntime { get; set; } = null!;
+
+
+    private List<string> States = new List<string>();
+
+    public async Task AlertBrowser()
+    {
+        await JSRuntime.InvokeVoidAsync("messageBox", "Blazor is awesome");
+    }
+
+    public async Task SetColor()
+    {
+        await JSRuntime.InvokeVoidAsync("setColorInStorage", "Red");
+    }
+
+    public async Task GetColor()
+    {
+        Color = await JSRuntime.InvokeAsync<string>("getColorFromStorage");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var dd = await orderService.All();
+
+        States.Add("OnInitializedAsync");
+    }
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        States.Add("OnAfterRenderAsync");
+
+        return base.OnAfterRenderAsync(firstRender);
+    }
+
+    protected override Task OnParametersSetAsync()
+    {
+        States.Add("OnParametersSetAsync");
+
+        return base.OnParametersSetAsync();
+    }
+
+    protected override bool ShouldRender()
+    {
+
+        return base.ShouldRender();
+
+    }
+
+    private void Rerender()
+    {
+        States.Add("Rerender");
+
+
+        StateHasChanged();
+
+    }
+}
