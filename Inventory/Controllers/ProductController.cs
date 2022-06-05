@@ -1,5 +1,5 @@
-﻿using Application.Features.EmployeeFeatures.Commands;
-using Application.Features.EmployeeFeatures.Queries;
+﻿using Application.Features.ProductFeatures.Commands;
+using Application.Features.ProductFeatures.Queries;
 using Infrastructure.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -63,13 +63,13 @@ namespace Inventory.Controllers
             // Check if the product exists
             Product? existing = await _mediator.Send(new GetProductByIdQuery(id));
             // 404 resource not found
-            if (existing == null) { return NotFound(); } 
+            if (existing == null) { return NotFound(); }
 
             bool updated = await _mediator.Send(new UpdateProductCommand(product));
             if (!updated) { return BadRequest("Repository failed to update product."); }
 
             // 204 no content
-            return new NoContentResult(); 
+            return new NoContentResult();
         }
 
         // DELETE: api/customers/[id]
@@ -86,7 +86,7 @@ namespace Inventory.Controllers
             if (deleted == false) { return BadRequest($"Customer {id} was found but failed to delete."); }
 
             // 204 No content
-            return new NoContentResult(); 
+            return new NoContentResult();
 
         }
     }

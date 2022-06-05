@@ -1,6 +1,6 @@
 ﻿using static Shared.CQRSInfrastructure;
 
-namespace Application.Features.EmployeeFeatures.Commands
+namespace Application.Features.ProductFeatures.Commands
 {
     public class DeleteProductCommand : ICommand<bool?>
     {

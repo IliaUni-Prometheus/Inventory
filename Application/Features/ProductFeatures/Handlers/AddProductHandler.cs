@@ -1,9 +1,9 @@
-﻿using Application.Features.EmployeeFeatures.Commands;
+﻿using Application.Features.ProductFeatures.Commands;
 using Domain.Models.Abstraction;
 using Infrastructure.Models;
 using static Shared.CQRSInfrastructure;
 
-namespace Application.Features.EmployeeFeatures.Handlers
+namespace Application.Features.ProductFeatures.Handlers
 {
     public class AddProductHandler : ICommandHandler<AddProductCommand, Product?>
     {

@@ -1,7 +1,7 @@
 ﻿using Infrastructure.Models;
 using static Shared.CQRSInfrastructure;
 
-namespace Application.Features.EmployeeFeatures.Queries
+namespace Application.Features.ProductFeatures.Queries
 {
     public class GetProductByIdQuery : IQuery<Product>
     {

@@ -1,9 +1,9 @@
-﻿using Application.Features.EmployeeFeatures.Queries;
+﻿using Application.Features.ProductFeatures.Queries;
 using Domain.Models.Abstraction;
 using Infrastructure.Models;
 using static Shared.CQRSInfrastructure;
 
-namespace Application.Features.EmployeeFeatures.Handlers
+namespace Application.Features.ProductFeatures.Handlers
 {
     public class GetProductsHandler : IQueryHandler<GetProductsQuery, IEnumerable<Product>>
     {

@@ -1,13 +1,8 @@
-﻿using Application.Features.EmployeeFeatures.Commands;
+﻿using Application.Features.ProductFeatures.Commands;
 using Domain.Models.Abstraction;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static Shared.CQRSInfrastructure;
 
-namespace Application.Features.EmployeeFeatures.Handlers
+namespace Application.Features.ProductFeatures.Handlers
 {
     public class DeleteProductHandler : ICommandHandler<DeleteProductCommand, bool?>
     {
