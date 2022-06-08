@@ -16,5 +16,10 @@
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Features\AuthenticationFeatures\Queries\" />
+    <Folder Include="Features\EmployeeFeatures\Commands\" />
+    <Folder Include="Features\OrderFeautres\Commands\" />
+  </ItemGroup>
 
 </Project>

@@ -1,7 +1,7 @@
-﻿using Application.Features.EmployeeFeatures.Commands;
-using Application.Features.EmployeeFeatures.Queries;
+﻿using Application.Features.EmployeeFeatures.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Shared.DTOs;
 
 namespace Inventory.Controllers
 {
@@ -11,21 +11,17 @@ namespace Inventory.Controllers
     {
         private readonly IMediator _mediator;
 
-        public EmployeeController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+        public EmployeeController(IMediator mediator) { _mediator = mediator; }
 
+        // GET: api/employee
+        // this will always return list of employees (but it might be empty)
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] AllEmployeesQuery query)
+        [ProducesResponseType(200, Type = typeof(BrowseResult<EmployeeDTO>))]
+        public async Task<IActionResult> GetOrders([FromQuery] int page = 1)
         {
-            return Ok(_mediator.Send(query));
-        }
+            var orders = await _mediator.Send(new GetEmployeesQuery(page));
 
-        [HttpPut]
-        public async Task<IActionResult> ChangeName([FromBody] ChangeEmployeeNameCommand command)
-        {
-            return Ok(_mediator.Send(command));
+            return Ok(orders);
         }
     }
 }

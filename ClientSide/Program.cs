@@ -1,12 +1,15 @@
-using ClientSide.Data;
-using ClientSide.Data.Implementations;
+using ClientSide.Services.EmployeeService;
+using ClientSide.Services.OrderService;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<IOrderService, OrderService>();
+//builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7045/api/") });
+//builder.Services.AddSingleton<IOrderService, OrderService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
 var app = builder.Build();
 

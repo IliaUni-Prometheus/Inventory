@@ -1,0 +1,27 @@
+﻿@page "/employees"
+@using ClientSide.Services.EmployeeService
+@using global::Shared.DTOs
+@inject IEmployeeService EmployeeService
+@inject NavigationManager NavigationManager
+@implements IDisposable
+
+<h3>Employees</h3>
+
+@if (_employees == null)
+{
+    <div class="loading-message">
+        <div class="spinner-border text-primary" role="status">
+        </div>
+        <span class="loading-message__text">Loading Employees...</span>
+    </div>
+}
+else
+{
+    <PaginatedTable 
+        Route="employees"
+        Items=_employees 
+        ColumnNames=_columnNames 
+        PropertyNames=_propertyNames 
+        CurrentPage=_currentPage 
+        PageCount=_pageCount />
+}
