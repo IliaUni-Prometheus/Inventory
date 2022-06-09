@@ -4,13 +4,33 @@ namespace Domain.Models
 {
     public class User
     {
-        public int Id { get; set; }
+        public User() { }
 
-        public string UserName { get; set; }
+        private User(Role role, string userName, string passworHash)
+        {
+            Role = role;
+            UserName = userName;
+            PasswordHash = passworHash;
+        }
 
-        public Role Role { get; set; }
+        public int Id { get; private set; }
+
+        public string UserName { get; private set; }
+
+        public Role Role { get; private set; }
 
         [JsonIgnore]
-        public string PasswordHash { get; set; }
+        public string PasswordHash { get; private set; }
+
+
+        public static User CreateAdmin(string passworHash)
+        {
+            return new User(Role.Admin, "Admin-Test", passworHash);
+        }
+
+        public static User CreateCustomer(string passworHash)
+        {
+            return new User(Role.Customer, "Customer-Test", passworHash);
+        }
     }
 }

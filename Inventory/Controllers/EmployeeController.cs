@@ -1,10 +1,12 @@
 ﻿using Application.Features.EmployeeFeatures.Commands;
 using Application.Features.EmployeeFeatures.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inventory.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class EmployeeController : ControllerBase
@@ -19,13 +21,13 @@ namespace Inventory.Controllers
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] AllEmployeesQuery query)
         {
-            return Ok(_mediator.Send(query));
+            return Ok(await _mediator.Send(query));
         }
 
         [HttpPut]
         public async Task<IActionResult> ChangeName([FromBody] ChangeEmployeeNameCommand command)
         {
-            return Ok(_mediator.Send(command));
+            return Ok(await _mediator.Send(command));
         }
     }
 }
