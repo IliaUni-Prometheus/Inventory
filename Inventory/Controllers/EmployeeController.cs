@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Inventory.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class EmployeeController : ControllerBase
@@ -18,6 +17,7 @@ namespace Inventory.Controllers
             _mediator = mediator;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] AllEmployeesQuery query)
         {

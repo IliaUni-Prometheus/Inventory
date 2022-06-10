@@ -24,7 +24,7 @@ namespace Application.Services.Concrete
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()),
-                    new Claim("Role", user.Role.ToString()) }),
+                    new Claim(ClaimTypes.Role, user.Role.ToString()) }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 Issuer = "OurIssuer",
                 Audience = "ValidAudience",
