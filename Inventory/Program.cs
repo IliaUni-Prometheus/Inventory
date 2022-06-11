@@ -25,6 +25,8 @@ builder.Services.AddScoped<IJwtUtils, JwtUtils>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddDbContext<NorthwindContext>();
 builder.Services.AddMediatR(typeof(AllEmployeesQueryHandler).Assembly);
+builder.Services.AddMediatR(typeof(GetProductsQueryHandler).Assembly);
+builder.Services.AddMediatR(typeof(GetProductByIdQueryHandler).Assembly);
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
 
 var app = builder.Build();

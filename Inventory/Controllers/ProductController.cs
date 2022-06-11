@@ -1,6 +1,8 @@
-﻿using Domain.Models.Abstraction;
-using Infrastructure.Models; //TODO:Transfer from Infrastructure to Domain
+﻿using Application.Features.EmployeeFeatures.Queries;
+using Application.Features.ProductFeatures.Commands;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using static Shared.CQRSInfrastructure;
 
 namespace Inventory.Controllers;
 
@@ -8,23 +10,11 @@ namespace Inventory.Controllers;
 [ApiController]
 public class ProductController : ControllerBase
 {
-    private readonly IProductRepository _repository;
+    private readonly IMediator _mediator;
 
-    public ProductController(IProductRepository repository)
+    public ProductController(IMediator mediator)
     {
-        _repository = repository;
-    }
-
-    /// <summary>
-    /// GetProductById
-    /// </summary>
-    /// <param name="id">The <see cref="int"/></param>
-    /// <returns><see cref="{Product}"/></returns>
-    [HttpGet]
-    public async Task<Product?> GetProductById(int id)
-    {
-        var product = _repository.GetByIdAsync(id);
-        return await product;
+        _mediator = mediator;
     }
 
     /// <summary>
@@ -32,31 +22,29 @@ public class ProductController : ControllerBase
     /// </summary>
     /// <returns><see cref="IEnumerable{Product}"/></returns>
     [HttpGet]
-    public async Task<IEnumerable<Product>> GetProducts()
-    {
-        var products = await _repository.GetAllAsync();
-        return products;
-    }
+    public async Task<object?> GetProducts() => await _mediator.Send(new GetProductsQuery());
+
+    /// <summary>
+    /// GetProductById
+    /// </summary>
+    /// <param name="id">The <see cref="int"/></param>
+    /// <returns><see cref="{Product}"/></returns>
+    [HttpGet]
+    public async Task<object?> GetProductById(int id) =>
+        await _mediator.Send(new GetProductByIdQuery() { ProductId = id });
 
     /// <summary>
     /// AddProduct
     /// </summary>
-    /// <param name="product"><see cref="Product"/></param>
+    /// <param name="command"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<int> AddProduct([FromBody] Product product)
-    {
-        var productId = await _repository.InsertAsync(product);
-        return productId;
-    }
+    public async Task<CommandExecutionResult> Create([FromBody] CreateProductCommand command) => await _mediator.Send(command);
 
     /// <summary>
     /// DeleteProduct
     /// </summary>
     /// <param name="id"></param>
     [HttpDelete]
-    public async Task DeleteProduct(int id)
-    {
-        await _repository.DeleteAsync(id);
-    }
+    public async Task<CommandExecutionResult> Delete(int id) => await _mediator.Send(new DeleteProductCommand(){ ProductId = id});
 }

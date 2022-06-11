@@ -7,7 +7,6 @@ public interface IProductRepository
     /// <summary>
     /// GetAllAsync
     /// </summary>
-    /// <param name="whereConditions">The <see cref="object"/></param>
     /// <returns>The <see cref="Task{IEnumerable{TEntity}}"/></returns>
     Task<IEnumerable<Product>> GetAllAsync();
 

@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Infrastructure.Models;
 
-namespace Infrastructure.Models
+namespace Domain.Models
 {
     public partial class Product
     {

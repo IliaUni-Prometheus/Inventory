@@ -1,4 +1,5 @@
-﻿using Domain.Models.Abstraction;
+﻿using Domain.Models;
+using Domain.Models.Abstraction;
 using Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 
