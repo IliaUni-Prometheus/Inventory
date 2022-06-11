@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inventory.Controllers
@@ -18,10 +19,10 @@ namespace Inventory.Controllers
             _logger = logger;
         }
 
+        [Authorize(Roles = "Customer")]
         [HttpGet(Name = "GetWeatherForecast")]
         [ProducesResponseType(200, Type = typeof(WeatherForecast))]
         [ProducesResponseType(404)]
-
         public IEnumerable<WeatherForecast> Get()
         {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast

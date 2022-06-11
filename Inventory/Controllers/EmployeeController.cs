@@ -1,6 +1,7 @@
 ﻿using Application.Features.EmployeeFeatures.Commands;
 using Application.Features.EmployeeFeatures.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inventory.Controllers
@@ -16,6 +17,7 @@ namespace Inventory.Controllers
             _mediator = mediator;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] AllEmployeesQuery query)
         {
