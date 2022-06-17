@@ -14,10 +14,14 @@
 
 </EditForm>
 
+<button onclick="@TestBearer">Test Bearer</button>
+
 @code {
 
     [Inject]
     private IUserService _userService { get; set; }
+    [Inject]
+    private IOrderService _orderService { get; set; }
     private SignInViewModel SignInViewModel = new SignInViewModel();
     private string Role { get; set; }
 
@@ -39,5 +43,11 @@
             Role = _stateProvider.Role;
             StateHasChanged();
         }
+    }
+
+    private async void TestBearer()
+    {
+        await _orderService.All();
+
     }
 }

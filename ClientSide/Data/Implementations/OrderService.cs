@@ -4,9 +4,20 @@ namespace ClientSide.Data.Implementations
 {
     public class OrderService : IOrderService
     {
+        private readonly ILocalStorageService _localStorage;
+
+        public OrderService(ILocalStorageService localStorageService)
+        {
+            _localStorage = localStorageService;
+        }
         public async Task<List<object>> All()
         {
-            var response = await "https://localhost:7045/api/Employee".GetJsonAsync<object>();
+            var token = await _localStorage.GetItem<string>("accessToken");
+
+            var response = await "https://localhost:7045/api/Employee"
+                               .WithOAuthBearerToken(token).
+                               GetJsonAsync<object>();
+
 
             throw new NotImplementedException();
         }

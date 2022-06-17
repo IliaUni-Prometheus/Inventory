@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<IOrderService, OrderService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 
 builder.Services.Configure<ApiConfigs>(builder.Configuration.GetSection("ApiConfigs"));
 
