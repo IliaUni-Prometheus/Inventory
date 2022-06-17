@@ -8,7 +8,7 @@ namespace Application.DataContracts.Responses
         public int Id { get; set; }
         public string Username { get; set; }
         public Role Role { get; set; }
-        public string Token { get; set; }
+        public string AccessToken { get; set; }
         public AuthenticateResponse()
         {
 
@@ -17,7 +17,7 @@ namespace Application.DataContracts.Responses
         {
             Id = user.Id;
             Role = user.Role;
-            Token = token;
+            AccessToken = token;
         }
     }
 }
