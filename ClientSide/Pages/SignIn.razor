@@ -25,6 +25,9 @@
     protected async Task UserSignIn()
     {
         var result = await _userService.SignIn(SignInViewModel);
+        await _stateProvider.GetAuthenticationStateAsync();
+        Role = _stateProvider.Role;
+
         StateHasChanged();
     }
 
