@@ -1,0 +1,53 @@
+﻿@page "/sign-in"
+@using ClientSide.Data
+@using ClientSide.Models
+
+<h3>SignIn</h3>
+
+<h1>Role : @Role</h1>
+
+
+<EditForm Model=@SignInViewModel OnValidSubmit="@UserSignIn">
+
+    <InputText placeholder="UserName" @bind-Value="SignInViewModel.UserName"></InputText>
+    <InputText placeholder="Password" @bind-Value="SignInViewModel.Password"></InputText>
+
+    <button type="submit">Sign In</button>
+</EditForm>
+
+<button onclick="@TestFetchingData">Test Data</button>
+
+@code {
+
+    [Inject]
+    private IUserService _userService { get; set; }
+    [Inject]
+    private IOrderService _orderService { get; set; }
+
+    private SignInViewModel SignInViewModel = new SignInViewModel();
+    private string Role { get; set; } = "";
+
+
+    private async Task UserSignIn()
+    {
+        var result = await _userService.SignIn(SignInViewModel);
+        await _stateProvider.GetAuthenticationStateAsync();
+
+        Role = _stateProvider.Role;
+    }
+
+    protected async override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await _stateProvider.GetAuthenticationStateAsync();
+            Role = _stateProvider.Role;
+            StateHasChanged();
+        }
+    }
+
+    private async void TestFetchingData()
+    {
+        await _orderService.All();
+    }
+}

@@ -1,12 +1,21 @@
+using ClientSide.Configs;
 using ClientSide.Data;
 using ClientSide.Data.Implementations;
+using ClientSide.Helpers;
+using Microsoft.AspNetCore.Components.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<IOrderService, OrderService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ILocalStorageService, LocalStorageService>();
+builder.Services.AddScoped<ApiAuthenticationStateProvider>();
+builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>();
+
+builder.Services.Configure<ApiConfigs>(builder.Configuration.GetSection("ApiConfigs"));
 
 var app = builder.Build();
 
