@@ -1,6 +1,6 @@
-﻿namespace Shared.DTOs
+﻿namespace ClientSide.Models
 {
-    public class OrderDTO
+    public class OrderViewModel
     {
         public int OrderId { get; set; }
         public DateTime? OrderDate { get; set; }

@@ -1,24 +1,13 @@
-﻿using Flurl.Http;
+﻿using ClientSide.Models;
+using Flurl.Http;
 
 namespace ClientSide.Data.Implementations
 {
     public class OrderService : IOrderService
     {
-        public async Task<List<object>> All()
+        public async Task<PaginatedResultViewModel<OrderViewModel>> All(int page)
         {
-            var response = await "https://localhost:7045/api/Employee".GetJsonAsync<object>();
-
-            throw new NotImplementedException();
-        }
-
-        public Task Delete(int orderId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<object> OfId(int orderId)
-        {
-            throw new NotImplementedException();
+            return await $"https://localhost:7045/api/Order?page={page}".GetJsonAsync<PaginatedResultViewModel<OrderViewModel>>();
         }
     }
 }

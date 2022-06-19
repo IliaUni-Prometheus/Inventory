@@ -11,11 +11,9 @@ namespace Infrastructure.Repositories
         // Constructor for injection
         public EmployeeRepository(NorthwindContext db) { _db = db; }
 
-        public async Task<IEnumerable<Employee>> RetrieveAllAsync(int page, int itemsPerPage)
+        public async Task<IEnumerable<Employee>> RetrieveAllAsync()
         {
             return await _db.Employees
-                    .Skip((page - 1) * itemsPerPage)
-                    .Take(itemsPerPage)
                     .ToListAsync();
         }
         public async Task<Employee?> RetrieveByIdAsync(int id)
@@ -49,10 +47,6 @@ namespace Infrastructure.Repositories
 
             // Order was found, but it couldn't be deleted
             return false;
-        }
-        public async Task<int> Count()
-        {
-            return await _db.Employees.CountAsync();
         }
     }
 }

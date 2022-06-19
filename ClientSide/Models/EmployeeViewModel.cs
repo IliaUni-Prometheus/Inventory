@@ -1,6 +1,6 @@
-﻿namespace Shared.DTOs
+﻿namespace ClientSide.Models
 {
-    public class EmployeeDTO
+    public class EmployeeViewModel
     {
         public int EmployeeId { get; set; }
         public string FirstName { get; set; } = null!;

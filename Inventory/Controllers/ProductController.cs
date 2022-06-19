@@ -17,37 +17,39 @@ namespace Inventory.Controllers
         // GET: api/products
         // this will always return a list of products (but it might be empty)
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Product>))]
-        public async Task<IEnumerable<Product>> GetProducts()
+        [ProducesResponseType(200, Type = typeof(IEnumerable<AllProductsQueryResult>))]
+        public async Task<IEnumerable<AllProductsQueryResult>> GetProducts()
         {
-            return await _mediator.Send(new GetProductsQuery());
+            return await _mediator.Send(new GetAllProductsQuery());
         }
 
         //GET: api/products/[id]
         [HttpGet("{id:int}", Name = nameof(GetProduct))]
-        [ProducesResponseType(200, Type = typeof(Product))]
+        [ProducesResponseType(200, Type = typeof(ProductByIdQueryResult))]
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetProduct(int id)
         {
-            Product? product = await _mediator.Send(new GetProductByIdQuery(id));
-            if (product == null) { return NotFound(); } // 404 Resource not found
+            ProductByIdQueryResult? product = await _mediator.Send(new GetProductByIdQuery(id));
+            // 404 Resource not found
+            if (product == null) { return NotFound(); }
 
-            return Ok(product); // 200 OK with product in body
+            // 200 OK with product in body
+            return Ok(product);
         }
 
         // POST: api/products
         [HttpPost]
-        [ProducesResponseType(201, Type = typeof(Product))]
+        [ProducesResponseType(201, Type = typeof(AddProductCommandResult))]
         [ProducesResponseType(400)]
         public async Task<IActionResult> CreateProduct([FromBody] Product product)
         {
             if (product == null) { return BadRequest("Product has to have a body."); }
 
-            Product? inserted = await _mediator.Send(new AddProductCommand(product));
+            AddProductCommandResult? inserted = await _mediator.Send(new AddProductCommand(product));
             if (inserted == null) { return BadRequest("Repository failed to create product."); }
 
             // 201 created
-            return CreatedAtRoute(nameof(GetProduct), new { id = inserted.ProductId }, inserted);
+            return CreatedAtRoute(nameof(GetProduct), new { id = inserted.Id }, inserted);
         }
 
         // PUT: api/products/[id]
@@ -61,11 +63,11 @@ namespace Inventory.Controllers
             if (product == null || product.ProductId != id) { return BadRequest(); }
 
             // Check if the product exists
-            Product? existing = await _mediator.Send(new GetProductByIdQuery(id));
+            ProductByIdQueryResult? existing = await _mediator.Send(new GetProductByIdQuery(id));
             // 404 resource not found
             if (existing == null) { return NotFound(); }
 
-            bool updated = await _mediator.Send(new UpdateProductCommand(product));
+            bool updated = await _mediator.Send(new UpdateProductCommand(product.ProductId, product.ProductName));
             if (!updated) { return BadRequest("Repository failed to update product."); }
 
             // 204 no content

@@ -1,17 +1,17 @@
-﻿using Microsoft.AspNetCore.Components.Routing;
+﻿using ClientSide.Models;
+using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.WebUtilities;
-using Shared.DTOs;
 
 namespace ClientSide.Pages
 {
     public partial class Orders
     {
-        private List<OrderDTO> _orders = null;
+        private List<OrderViewModel> _orders = null;
         private int _currentPage = 1;
         private int _pageCount = 0;
 
-        private string[] _columnNames = new string[] { "Order Date", "Freight", "Ship Address", "Postal Code" };
-        private string[] _propertyNames = new string[] { "OrderDate", "Freight", "ShipAddress", "ShipPostalCode" };
+        private int _startPageIndex = 1;
+        private int _endPageIndex = 1;
 
         protected override async Task OnInitializedAsync()
         {
@@ -35,10 +35,18 @@ namespace ClientSide.Pages
 
         private async Task FetchOrders(int page)
         {
-            var response = await OrderService.GetOrders(page);
+            var response = await OrderService.All(page);
             _currentPage = response.CurrentPage;
             _pageCount = response.Pages;
-            _orders = response.Orders;
+            _orders = response.Items;
+            SetPaginationIndexes();
+        }
+
+        private void SetPaginationIndexes()
+        {
+            _startPageIndex = (_currentPage - 5) < 1 ? 1 : _currentPage - 5;
+            _endPageIndex = (_currentPage + 5) > _pageCount ? _pageCount : _currentPage + 5;
+            if (_endPageIndex < 10 && _pageCount >= 10) { _endPageIndex = 10; }
         }
     }
 }

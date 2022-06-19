@@ -1,6 +1,6 @@
 ﻿@page "/orders"
-@using ClientSide.Services.OrderService
-@using global::Shared.DTOs
+@using ClientSide.Data
+@using ClientSide.Models
 @inject IOrderService OrderService
 @inject NavigationManager NavigationManager
 @implements IDisposable
@@ -17,11 +17,43 @@
 }
 else
 {
-    <PaginatedTable 
-        Route="orders"
-        Items=_orders 
-        ColumnNames=_columnNames 
-        PropertyNames=_propertyNames 
-        CurrentPage=_currentPage 
-        PageCount=_pageCount />
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Order Date</th>
+                <th scope="col">Freight</th>
+                <th scope="col">Ship Address</th>
+                <th scope="col">Postal Code</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{int index = 1;}
+            @foreach (OrderViewModel order in _orders)
+            {
+                <tr>
+                    <th scope="row">@(index++)</th>
+                    <td>@order.OrderDate</td>
+                    <td>@order.Freight</td>
+                    <td>@order.ShipAddress</td>
+                    <td>@order.ShipPostalCode</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item @(_currentPage <= 1 ? "disabled" : String.Empty)"><a class="page-link" href="/orders?page=@(_currentPage - 1)">Previous</a></li>
+            @for (var i = _startPageIndex; i <= _endPageIndex; i++)
+            {
+                <li class="page-item @(i == _currentPage ? "active" : String.Empty)"><a class="page-link" href="/orders?page=@(i)">@i</a></li>
+            }
+            @if (_pageCount > 10 && _currentPage < _pageCount - 5)
+            {
+                <span> ... </span>
+                <li class="page-item"><a class="page-link" href="/orders?page=@(_pageCount)">@_pageCount</a></li>
+            }
+            <li class="page-item @(_currentPage >= _pageCount ? "disabled" : String.Empty)"><a class="page-link" href="/orders?page=@(_currentPage + 1)">Next</a></li>
+        </ul>
+    </nav>
 }

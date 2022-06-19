@@ -1,7 +1,6 @@
 ﻿using Application.Features.EmployeeFeatures.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Shared.DTOs;
 
 namespace Inventory.Controllers
 {
@@ -16,10 +15,10 @@ namespace Inventory.Controllers
         // GET: api/employee
         // this will always return list of employees (but it might be empty)
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(BrowseResult<EmployeeDTO>))]
-        public async Task<IActionResult> GetOrders([FromQuery] int page = 1)
+        [ProducesResponseType(200, Type = typeof(IEnumerable<AllEmployeesQueryResult>))]
+        public async Task<IActionResult> GetOrders()
         {
-            var orders = await _mediator.Send(new GetEmployeesQuery(page));
+            var orders = await _mediator.Send(new GetAllEmployeesQuery());
 
             return Ok(orders);
         }

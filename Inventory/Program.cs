@@ -27,7 +27,7 @@ builder.Services.AddDbContext<NorthwindContext>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-builder.Services.AddMediatR(typeof(GetEmployeesQuery).Assembly);
+builder.Services.AddMediatR(typeof(GetAllEmployeesQuery).Assembly);
 
 var app = builder.Build();
 
