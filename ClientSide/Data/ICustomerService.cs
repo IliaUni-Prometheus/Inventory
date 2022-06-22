@@ -1,6 +1,9 @@
-﻿namespace ClientSide.Data
+﻿using ClientSide.Models;
+
+namespace ClientSide.Data
 {
-    public class ICustomerService
+    public interface ICustomerService
     {
+        Task<List<CustomerViewModel>> All();
     }
 }
