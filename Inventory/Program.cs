@@ -66,6 +66,13 @@ builder.Services.AddDbContext<NorthwindContext>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+builder.Services.AddScoped<IRegionRepository, RegionRepository>();
+builder.Services.AddScoped<IShipperRepository, ShipperRepository>();
+builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();
+builder.Services.AddScoped<ITerritoryRepository, TerritoryRepository>();
 builder.Services.AddMediatR(typeof(GetAllEmployeesQuery).Assembly);
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

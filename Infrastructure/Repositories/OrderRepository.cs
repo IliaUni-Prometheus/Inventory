@@ -9,7 +9,10 @@ namespace Infrastructure.Repositories
         private readonly NorthwindContext _db;
 
         // Constructor for injection
-        public OrderRepository(NorthwindContext db) { _db = db; }
+        public OrderRepository(NorthwindContext db)
+        {
+            _db = db;
+        }
 
         public async Task<IEnumerable<Order>> RetrieveAllAsync(int page, int itemsPerPage)
         {

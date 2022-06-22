@@ -24,15 +24,5 @@ namespace ClientSide.Data.Implementations
                 .WithOAuthBearerToken(accessToken)
                 .GetJsonAsync<PaginatedResultViewModel<OrderViewModel>>();
         }
-
-        public Task Delete(int orderId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<object> OfId(int orderId)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
