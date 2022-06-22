@@ -9,7 +9,10 @@ namespace Infrastructure.Repositories
         private readonly NorthwindContext _db;
 
         // Constructor for injection
-        public EmployeeRepository(NorthwindContext db) { _db = db; }
+        public EmployeeRepository(NorthwindContext db)
+        {
+            _db = db;
+        }
 
         public async Task<IEnumerable<Employee>> RetrieveAllAsync()
         {

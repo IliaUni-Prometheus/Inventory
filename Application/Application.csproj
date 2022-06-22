@@ -7,10 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Features\AuthenticationFeatures\Queries\**" />
     <Compile Remove="Features\EmployeeFeatures\Commands\**" />
     <Compile Remove="Features\OrderFeautres\Commands\**" />
+    <EmbeddedResource Remove="Features\AuthenticationFeatures\Queries\**" />
     <EmbeddedResource Remove="Features\EmployeeFeatures\Commands\**" />
     <EmbeddedResource Remove="Features\OrderFeautres\Commands\**" />
+    <None Remove="Features\AuthenticationFeatures\Queries\**" />
     <None Remove="Features\EmployeeFeatures\Commands\**" />
     <None Remove="Features\OrderFeautres\Commands\**" />
   </ItemGroup>
@@ -24,9 +27,6 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Features\AuthenticationFeatures\Queries\" />
   </ItemGroup>
 
 </Project>
