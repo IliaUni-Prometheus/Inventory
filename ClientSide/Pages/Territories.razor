@@ -1,16 +1,16 @@
-﻿@page "/regions"
+﻿@page "/territories"
 @using ClientSide.Data
 @using ClientSide.Models
-@inject IRegionService RegionService
+@inject ITerritoryService TerritoryService
 
-<h3>Regions</h3>
+<h3>Territories</h3>
 
-@if (_regions == null)
+@if (_territories == null)
 {
     <div class="loading-message">
         <div class="spinner-border text-primary" role="status">
         </div>
-        <span class="loading-message__text">Loading Regions...</span>
+        <span class="loading-message__text">Loading Territories...</span>
     </div>
 }
 else
@@ -19,16 +19,16 @@ else
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Region Description</th>
+                <th scope="col">TerritoryDescription</th>
             </tr>
         </thead>
         <tbody>
             @{int index = 1;}
-            @foreach (RegionViewModel region in _regions)
+            @foreach (TerritoryViewModel territory in _territories)
             {
                 <tr>
                     <th scope="row">@(index++)</th>
-                    <td>@region.RegionDescription</td>
+                    <td>@territory.TerritoryDescription</td>
                 </tr>
             }
         </tbody>

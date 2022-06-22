@@ -1,16 +1,16 @@
-﻿@page "/regions"
+﻿@page "/shippers"
 @using ClientSide.Data
 @using ClientSide.Models
-@inject IRegionService RegionService
+@inject IShipperService ShipperService
 
-<h3>Regions</h3>
+<h3>Shippers</h3>
 
-@if (_regions == null)
+@if (_shippers == null)
 {
     <div class="loading-message">
         <div class="spinner-border text-primary" role="status">
         </div>
-        <span class="loading-message__text">Loading Regions...</span>
+        <span class="loading-message__text">Loading Shippers...</span>
     </div>
 }
 else
@@ -19,16 +19,18 @@ else
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Region Description</th>
+                <th scope="col">Company</th>
+                <th scope="col">Phone</th>
             </tr>
         </thead>
         <tbody>
             @{int index = 1;}
-            @foreach (RegionViewModel region in _regions)
+            @foreach (ShipperViewModel shipper in _shippers)
             {
                 <tr>
                     <th scope="row">@(index++)</th>
-                    <td>@region.RegionDescription</td>
+                    <td>@shipper.CompanyName</td>
+                    <td>@shipper.Phone</td>
                 </tr>
             }
         </tbody>

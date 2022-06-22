@@ -1,0 +1,44 @@
+﻿@page "/invoices"
+@using ClientSide.Data
+@using ClientSide.Models
+@inject IInvoiceService InvoiceService
+
+<h3>Categories</h3>
+
+@if (_invoices == null)
+{
+    <div class="loading-message">
+        <div class="spinner-border text-primary" role="status">
+        </div>
+        <span class="loading-message__text">Loading Invoices...</span>
+    </div>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Ship name</th>
+                <th scope="col">Ship address</th>
+                <th scope="col">Customer name</th>
+                <th scope="col">Sales person</th>
+                <th scope="col">Order date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{int index = 1;}
+            @foreach (InvoiceViewModel invoice in _invoices)
+            {
+                <tr>
+                    <th scope="row">@(index++)</th>
+                    <td>@invoice.ShipName</td>
+                    <td>@invoice.ShipAddress</td>
+                    <td>@invoice.CustomerName</td>
+                    <td>@invoice.Salesperson</td>
+                    <td>@invoice.OrderDate</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

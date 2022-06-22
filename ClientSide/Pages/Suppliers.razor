@@ -1,0 +1,46 @@
+﻿@page "/suppliers"
+@using ClientSide.Data
+@using ClientSide.Models
+@inject ISupplierService SupplierService
+
+<h3>Suppliers</h3>
+
+@if (_suppliers == null)
+{
+    <div class="loading-message">
+        <div class="spinner-border text-primary" role="status">
+        </div>
+        <span class="loading-message__text">Loading Suppliers...</span>
+    </div>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Company Name</th>
+                <th scope="col">Contact Name</th>
+                <th scope="col">Country</th>
+                <th scope="col">Address</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Home Page</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{int index = 1;}
+            @foreach (SupplierViewModel supplier in _suppliers)
+            {
+                <tr>
+                    <th scope="row">@(index++)</th>
+                    <td>@supplier.CompanyName</td>
+                    <td>@supplier.ContactName</td>
+                    <td>@supplier.Country</td>
+                    <td>@supplier.Address</td>
+                    <td>@supplier.Phone</td>
+                    <td>@supplier.HomePage</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

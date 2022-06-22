@@ -1,0 +1,46 @@
+﻿@page "/customers"
+@using ClientSide.Data
+@using ClientSide.Models
+@inject ICustomerService CustomerService
+
+<h3>Customers</h3>
+
+@if (_customers == null)
+{
+    <div class="loading-message">
+        <div class="spinner-border text-primary" role="status">
+        </div>
+        <span class="loading-message__text">Loading Customers...</span>
+    </div>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Title</th>
+                <th scope="col">Company</th>
+                <th scope="col">Country</th>
+                <th scope="col">Address</th>
+                <th scope="col">Phone</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{int index = 1;}
+            @foreach (CustomerViewModel customer in _customers)
+            {
+                <tr>
+                    <th scope="row">@(index++)</th>
+                    <td>@customer.ContactName</td>
+                    <td>@customer.ContactTitle</td>
+                    <td>@customer.CompanyName</td>
+                    <td>@customer.Country</td>
+                    <td>@customer.Address</td>
+                    <td>@customer.Phone</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
