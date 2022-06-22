@@ -62,3 +62,12 @@ a, .btn-link {
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
+
+.loading-message {
+    display: flex;
+    align-items: center;
+}
+
+.loading-message__text {
+    margin-left: 1rem;
+}
