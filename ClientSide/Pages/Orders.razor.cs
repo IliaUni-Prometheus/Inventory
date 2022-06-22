@@ -23,8 +23,15 @@ namespace ClientSide.Pages
         private async void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
         {
             var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
-            int page = int.Parse(QueryHelpers.ParseQuery(uri.Query)["page"]);
-            await FetchOrders(page);
+            if (QueryHelpers.ParseQuery(uri.Query).ContainsKey("page"))
+            {
+                int page;
+                if (int.TryParse(QueryHelpers.ParseQuery(uri.Query)["page"], out page))
+                {
+                    await FetchOrders(page);
+                }
+            }
+
             StateHasChanged();
         }
 
@@ -44,9 +51,21 @@ namespace ClientSide.Pages
 
         private void SetPaginationIndexes()
         {
-            _startPageIndex = (_currentPage - 5) < 1 ? 1 : _currentPage - 5;
-            _endPageIndex = (_currentPage + 5) > _pageCount ? _pageCount : _currentPage + 5;
-            if (_endPageIndex < 10 && _pageCount >= 10) { _endPageIndex = 10; }
+            //_startPageIndex = (_currentPage - 5) < 1 ? 1 : _currentPage - 5;
+            //_endPageIndex = (_currentPage + 5) > _pageCount ? _pageCount : _currentPage + 5;
+            //if (_endPageIndex < 10 && _pageCount >= 10) { _endPageIndex = 10; }
+
+            _startPageIndex = _currentPage - 4;
+            if (_startPageIndex < 1) { _startPageIndex = 1; }
+            if (_pageCount - 9 > 1 && _startPageIndex > _pageCount - 9) { _startPageIndex = _pageCount - 9; }
+            if (_pageCount <= 10) { _startPageIndex = 1; }
+            _endPageIndex = _currentPage + 6;
+            if (_endPageIndex < 11 && _pageCount >= _endPageIndex)
+            {
+                if (_pageCount >= 10) { _endPageIndex = 11; }
+                else { _endPageIndex = _pageCount + 1; }
+            }
+            if (_endPageIndex > _pageCount) { _endPageIndex = _pageCount + 1; }
         }
     }
 }

@@ -44,12 +44,13 @@ else
     <nav aria-label="Page navigation example">
         <ul class="pagination">
             <li class="page-item @(_currentPage <= 1 ? "disabled" : String.Empty)"><a class="page-link" href="/orders?page=@(_currentPage - 1)">Previous</a></li>
-            @for (var i = _startPageIndex; i <= _endPageIndex; i++)
+            @for (var i = _startPageIndex; i < _endPageIndex; i++)
             {
                 <li class="page-item @(i == _currentPage ? "active" : String.Empty)"><a class="page-link" href="/orders?page=@(i)">@i</a></li>
             }
-            @if (_pageCount > 10 && _currentPage < _pageCount - 5)
+            @if (_endPageIndex <= _pageCount)
             {
+                // _pageCount > 10 && _currentPage < _pageCount - 5
                 <span> ... </span>
                 <li class="page-item"><a class="page-link" href="/orders?page=@(_pageCount)">@_pageCount</a></li>
             }
