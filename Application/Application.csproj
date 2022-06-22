@@ -6,6 +6,15 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Features\EmployeeFeatures\Commands\**" />
+    <Compile Remove="Features\OrderFeautres\Commands\**" />
+    <EmbeddedResource Remove="Features\EmployeeFeatures\Commands\**" />
+    <EmbeddedResource Remove="Features\OrderFeautres\Commands\**" />
+    <None Remove="Features\EmployeeFeatures\Commands\**" />
+    <None Remove="Features\OrderFeautres\Commands\**" />
+  </ItemGroup>
+
 	<ItemGroup>
 		<PackageReference Include="BCrypt.Net-Next" Version="4.0.2" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.2" />
@@ -18,8 +27,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Features\AuthenticationFeatures\Queries\" />
-    <Folder Include="Features\EmployeeFeatures\Commands\" />
-    <Folder Include="Features\OrderFeautres\Commands\" />
   </ItemGroup>
 
 </Project>
