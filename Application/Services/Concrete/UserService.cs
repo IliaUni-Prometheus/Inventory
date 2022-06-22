@@ -28,7 +28,7 @@ namespace Application.Services.Concrete
 
             var jwtToken = await _jwtUtils.GenerateJwtToken(user);
 
-            return new AuthenticateResponse() { Role = user.Role, Token = jwtToken };
+            return new AuthenticateResponse() { Username = user.UserName, Role = user.Role, AccessToken = jwtToken };
         }
 
         public async Task<Domain.Models.User> GetById(int value)

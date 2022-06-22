@@ -1,5 +1,6 @@
 ﻿using Application.Features.EmployeeFeatures.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inventory.Controllers
@@ -12,8 +13,12 @@ namespace Inventory.Controllers
 
         public EmployeeController(IMediator mediator) { _mediator = mediator; }
 
+<<<<<<< HEAD
         // GET: api/employee
         // this will always return list of employees (but it might be empty)
+=======
+        [Authorize(Roles = "Admin")]
+>>>>>>> master
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<AllEmployeesQueryResult>))]
         public async Task<IActionResult> GetOrders()
