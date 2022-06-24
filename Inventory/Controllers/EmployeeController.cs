@@ -1,6 +1,5 @@
 ﻿using Application.Features.EmployeeFeatures.Queries;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inventory.Controllers
@@ -14,7 +13,6 @@ namespace Inventory.Controllers
         public EmployeeController(IMediator mediator) { _mediator = mediator; }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<AllEmployeesQueryResult>))]
         public async Task<IActionResult> GetOrders()
         {
