@@ -3,56 +3,42 @@ using Application.Helpers;
 using Application.Services.Abstract;
 using Application.Services.Concrete;
 using Domain.Models;
+using HealthChecks.UI.Client;
 using Infrastructure.Models;
 using Inventory.Authorization;
+using Inventory.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
+using Shared.Extensions;
+using Shared.Extensions.Swagger;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    var cacheProfiles = builder.Configuration
+            .GetSection("CacheProfiles")
+            .GetChildren();
+    foreach (var cacheProfile in cacheProfiles)
+    {
+        options.CacheProfiles
+        .Add(cacheProfile.Key,
+        cacheProfile.Get<CacheProfile>());
+    }
+});
+builder.Services.AddResponseCaching();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(s =>
-{
-    s.SwaggerDoc("v1",
-        new Microsoft.OpenApi.Models.OpenApiInfo
-        {
-            Description = "Test-Description",
-            Title = "Test-Title"
-        });
-    s.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
-    {
-        Description = "Test Desc",
-        Name = "Authorization",
-        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
-        Scheme = "Bearer",
-        In = ParameterLocation.Header
-    });
-
-    s.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement()
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference= new OpenApiReference
-                {
-                    Type=ReferenceType.SecurityScheme,
-                    Id="Bearer"
-                },
-                Scheme="oauth2",
-                Name="Bearer",
-                In=ParameterLocation.Header
-            },
-           new List<string>()
-        }
-    });
-});
+builder.Services.AddApiSwagger();
 
 // configure strongly typed settings object
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
@@ -62,7 +48,15 @@ builder.Services.AddScoped<IJwtUtils, JwtUtils>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddDbContext<NorthwindContext>();
 builder.Services.AddMediatR(typeof(AllEmployeesQueryHandler).Assembly);
-
+builder.Services.AddVersioning();
+builder.Services.AddCustomErrorHandling();
+builder.Services.AddHealthChecks();
+builder.Services.AddMemoryCache();
+builder.Services.AddHealthChecksUI(opt =>
+{
+    opt.AddHealthCheckEndpoint("default api", "/healthz"); //map health check api
+})
+        .AddInMemoryStorage();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                  .AddJwtBearer(options =>
                  {
@@ -79,24 +73,40 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                  });
 
 var app = builder.Build();
-
+var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+var env = app.Services.GetRequiredService<IHostEnvironment>();
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseApiSwaggerPage(env, provider);
 
 app.UseMiddleware<JwtMiddleware>();
-
+app.UseCustomExceptionHandler();
 app.UseHttpsRedirection();
-
+app.UseHttpLogging();
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.MapHealthChecks("/healthz");
 app.MapControllers();
+app.UseRouting();
+app.UseResponseCaching();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHealthChecks("/health", new HealthCheckOptions
+    {
+        Predicate = _ => false,
+        ResponseWriter = async (context, report) =>
+        {
+            context.Response.ContentType = "application/json; charset=utf-8";
+            var bytes = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(report));
+            await context.Response.Body.WriteAsync(bytes);
+        }
+    });
 
-SeedUsers(app);
+    //map healthcheck ui endpoing - default is /healthchecks-ui/
+    endpoints.MapHealthChecksUI();
+
+    endpoints.MapDefaultControllerRoute();
+});
+//SeedUsers(app);
 
 app.Run();
 
