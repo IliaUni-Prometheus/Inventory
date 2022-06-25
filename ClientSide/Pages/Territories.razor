@@ -1,0 +1,36 @@
+﻿@page "/territories"
+@using ClientSide.Data
+@using ClientSide.Models
+@inject ITerritoryService TerritoryService
+
+<h3>Territories</h3>
+
+@if (_territories == null)
+{
+    <div class="loading-message">
+        <div class="spinner-border text-primary" role="status">
+        </div>
+        <span class="loading-message__text">Loading Territories...</span>
+    </div>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">TerritoryDescription</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{int index = 1;}
+            @foreach (TerritoryViewModel territory in _territories)
+            {
+                <tr>
+                    <th scope="row">@(index++)</th>
+                    <td>@territory.TerritoryDescription</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

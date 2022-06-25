@@ -3,7 +3,9 @@ using Application.Helpers;
 using Application.Services.Abstract;
 using Application.Services.Concrete;
 using Domain.Models;
+using Domain.Models.Abstraction;
 using Infrastructure.Models;
+using Infrastructure.Repositories;
 using Inventory.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -61,7 +63,18 @@ builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSet
 builder.Services.AddScoped<IJwtUtils, JwtUtils>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddDbContext<NorthwindContext>();
-builder.Services.AddMediatR(typeof(AllEmployeesQueryHandler).Assembly);
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+builder.Services.AddScoped<IRegionRepository, RegionRepository>();
+builder.Services.AddScoped<IShipperRepository, ShipperRepository>();
+builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();
+builder.Services.AddScoped<ITerritoryRepository, TerritoryRepository>();
+builder.Services.AddMediatR(typeof(GetAllEmployeesQuery).Assembly);
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                  .AddJwtBearer(options =>

@@ -1,0 +1,38 @@
+﻿@page "/shippers"
+@using ClientSide.Data
+@using ClientSide.Models
+@inject IShipperService ShipperService
+
+<h3>Shippers</h3>
+
+@if (_shippers == null)
+{
+    <div class="loading-message">
+        <div class="spinner-border text-primary" role="status">
+        </div>
+        <span class="loading-message__text">Loading Shippers...</span>
+    </div>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Company</th>
+                <th scope="col">Phone</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{int index = 1;}
+            @foreach (ShipperViewModel shipper in _shippers)
+            {
+                <tr>
+                    <th scope="row">@(index++)</th>
+                    <td>@shipper.CompanyName</td>
+                    <td>@shipper.Phone</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

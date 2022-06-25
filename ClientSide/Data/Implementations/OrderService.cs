@@ -1,4 +1,5 @@
-﻿using ClientSide.Configs;
+using ClientSide.Configs;
+using ClientSide.Models;
 using Flurl.Http;
 using Microsoft.Extensions.Options;
 
@@ -8,31 +9,20 @@ namespace ClientSide.Data.Implementations
     {
         private readonly ApiConfigs _configs;
         private readonly ILocalStorageService _localStorageService;
+
         public OrderService(IOptions<ApiConfigs> configs, ILocalStorageService localStorageService)
         {
-            _configs = configs.Value;
-            _localStorageService = localStorageService;
+            this._configs = configs.Value;
+            this._localStorageService = localStorageService;
         }
 
-        public async Task<List<object>> All()
+        public async Task<PaginatedResultViewModel<OrderViewModel>> All(int page)
         {
             var accessToken = await _localStorageService.GetItem<string>("accessToken");
 
-            var response = await $"{_configs.ApiBaseUrl}/Employee"
-                                .WithOAuthBearerToken(accessToken)
-                                .GetJsonAsync<object>();
-
-            throw new NotImplementedException();
-        }
-
-        public Task Delete(int orderId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<object> OfId(int orderId)
-        {
-            throw new NotImplementedException();
+            return await $"{_configs.ApiBaseUrl}/Order?page={page}"
+                .WithOAuthBearerToken(accessToken)
+                .GetJsonAsync<PaginatedResultViewModel<OrderViewModel>>();
         }
     }
 }

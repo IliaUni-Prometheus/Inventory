@@ -1,0 +1,8 @@
+﻿.loading-message{
+    display: flex;
+    align-items: center;
+}
+
+.loading-message__text {
+    margin-left: 1rem;
+}

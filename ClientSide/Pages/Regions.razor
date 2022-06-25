@@ -1,73 +1,36 @@
-﻿@page "/regions/{RegionId?}"
+﻿@page "/regions"
 @using ClientSide.Data
-@inject IOrderService orderService
+@using ClientSide.Models
+@inject IRegionService RegionService
 
 <h3>Regions</h3>
 
-<button type="button" @onclick="@Rerender">Rerender</button>
-<button type="button" @onclick="@AlertBrowser">Alert Browser</button>
-<button type="button" @onclick="@SetColor">Set Color</button>
-<button type="button" @onclick="@GetColor">Get Color</button>
-
-<h2>@Color</h2>
-
-@foreach (var state in States)
+@if (_regions == null)
 {
-    <h1> @state</h1>
+    <div class="loading-message">
+        <div class="spinner-border text-primary" role="status">
+        </div>
+        <span class="loading-message__text">Loading Regions...</span>
+    </div>
 }
-
-@code {
-
-    [Parameter]
-    public string? RegionId { get; set; }
-
-    public string? Color { get; set; }
-
-    private List<string> States = new List<string>();
-
-    [Inject]
-    public IJSRuntime JSRuntime { get; set; } = null;
-
-    public async Task AlertBrowser()
-    {
-        await JSRuntime.InvokeVoidAsync("messageBox", "Blazor is fantastic");
-    }
-
-    public async Task SetColor()
-    {
-        await orderService.All();
-
-        await JSRuntime.InvokeVoidAsync("setColorInStorage", "Red");
-    }
-
-    public async Task GetColor()
-    {
-        Color = await JSRuntime.InvokeAsync<string>("getColorFromStorage");
-    }
-
-    protected override Task OnInitializedAsync()
-    {
-        States.Add("OnInitializedAsync");
-
-        return base.OnInitializedAsync();
-    }
-
-    protected override Task OnAfterRenderAsync(bool firstRender)
-    {
-        States.Add("OnAfterRenderAsync");
-
-        return base.OnAfterRenderAsync(firstRender);
-    }
-
-    protected override Task OnParametersSetAsync()
-    {
-        States.Add("OnParametersSetAsync");
-
-        return base.OnParametersSetAsync();
-    }
-
-    private void Rerender()
-    {
-        StateHasChanged();
-    }
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Region Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{int index = 1;}
+            @foreach (RegionViewModel region in _regions)
+            {
+                <tr>
+                    <th scope="row">@(index++)</th>
+                    <td>@region.RegionDescription</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }

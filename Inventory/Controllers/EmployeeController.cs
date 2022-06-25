@@ -1,7 +1,5 @@
-﻿using Application.Features.EmployeeFeatures.Commands;
-using Application.Features.EmployeeFeatures.Queries;
+﻿using Application.Features.EmployeeFeatures.Queries;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inventory.Controllers
@@ -12,22 +10,15 @@ namespace Inventory.Controllers
     {
         private readonly IMediator _mediator;
 
-        public EmployeeController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+        public EmployeeController(IMediator mediator) { _mediator = mediator; }
 
-        [Authorize(Roles = "Admin")]
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] AllEmployeesQuery query)
+        [ProducesResponseType(200, Type = typeof(IEnumerable<AllEmployeesQueryResult>))]
+        public async Task<IActionResult> GetOrders()
         {
-            return Ok(_mediator.Send(query));
-        }
+            var orders = await _mediator.Send(new GetAllEmployeesQuery());
 
-        [HttpPut]
-        public async Task<IActionResult> ChangeName([FromBody] ChangeEmployeeNameCommand command)
-        {
-            return Ok(_mediator.Send(command));
+            return Ok(orders);
         }
     }
 }

@@ -1,9 +1,9 @@
-﻿namespace ClientSide.Data
+﻿using ClientSide.Models;
+
+namespace ClientSide.Data
 {
     public interface IOrderService
     {
-        Task<List<object>> All();
-        Task<object> OfId(int orderId);
-        Task Delete(int orderId);
+        Task<PaginatedResultViewModel<OrderViewModel>> All(int page);
     }
 }
