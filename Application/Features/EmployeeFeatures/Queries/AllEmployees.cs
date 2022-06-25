@@ -20,6 +20,9 @@ namespace Application.Features.EmployeeFeatures.Queries
                 EmployeeName = x.FirstName
             }).ToList();
 
+            if (employees.Count > 5)
+                throw new AppException("More than 10");
+
             return employees;
         }
     }
