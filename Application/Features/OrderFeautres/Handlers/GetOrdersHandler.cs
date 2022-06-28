@@ -1,4 +1,5 @@
 ﻿using Application.Features.OrderFeautres.Queries;
+using Domain.ErrorCodes;
 using Domain.Models.Abstraction;
 using Shared.DTOs;
 using static Shared.CQRSInfrastructure;
@@ -26,6 +27,11 @@ namespace Application.Features.OrderFeautres.Handlers
                     ShipAddress = o.ShipAddress,
                     ShipPostalCode = o.ShipPostalCode
                 });
+
+            if (orders.Count() > 1)
+            {
+                throw new AppException("Too Much", ErrorCode.MaxCount);
+            }
 
             // calculate how many pages there will be considering our items per page
             int ordersCount = await _repo.Count();

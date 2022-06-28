@@ -9,11 +9,19 @@
 
 @if (_orders == null)
 {
-    <div class="loading-message">
-        <div class="spinner-border text-primary" role="status">
+    @if (HasError)
+    {
+        <span class="loading-message__text">@ErrorMessage</span>
+        <span class="loading-message__text">@ErrorCode</span>
+    }
+    else
+    {
+        <div class="loading-message">
+            <div class="spinner-border text-primary" role="status">
+            </div>
+            <span class="loading-message__text">Loading Orders...</span>
         </div>
-        <span class="loading-message__text">Loading Orders...</span>
-    </div>
+    }
 }
 else
 {
