@@ -1,7 +1,7 @@
 ﻿using Application.DataContracts.Requests;
-using Application.Services.Abstract;
+using Application.Features.AuthenticationFeatures.Commands;
 using Inventory.Authorization;
-using Microsoft.AspNetCore.Http;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inventory.Controllers
@@ -11,18 +11,15 @@ namespace Inventory.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private IUserService _userService;
+        private readonly IMediator _mediator;
 
-        public UserController(IUserService userService)
-        {
-            _userService = userService;
-        }
+        public UserController(IMediator mediator) { this._mediator = mediator; }
 
         [AllowAnonymous]
         [HttpPost("[action]")]
         public async Task<IActionResult> Authenticate(AuthenticateRequest model)
         {
-            var response = await _userService.AuthenticateAsync(model);
+            var response = await _mediator.Send(new AuthenticateCommand(model));
             return Ok(response);
         }
     }

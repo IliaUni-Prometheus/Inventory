@@ -1,0 +1,27 @@
+﻿@page "/orders"
+@using ClientSide.Services.OrderService
+@using global::Shared.DTOs
+@inject IOrderService OrderService
+@inject NavigationManager NavigationManager
+@implements IDisposable
+
+<h3>Orders</h3>
+
+@if (_orders == null)
+{
+    <div class="loading-message">
+        <div class="spinner-border text-primary" role="status">
+        </div>
+        <span class="loading-message__text">Loading Orders...</span>
+    </div>
+}
+else
+{
+    <PaginatedTable 
+        Route="orders"
+        Items=_orders 
+        ColumnNames=_columnNames 
+        PropertyNames=_propertyNames 
+        CurrentPage=_currentPage 
+        PageCount=_pageCount />
+}
