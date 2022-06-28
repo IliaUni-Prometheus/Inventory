@@ -1,4 +1,5 @@
 ﻿using Application.Features.EmployeeFeatures.Queries;
+using Inventory.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,15 +15,20 @@ namespace Inventory.Controllers
 
         public EmployeeController(IMediator mediator) { _mediator = mediator; }
 
-        // GET: api/employee
-        // this will always return list of employees (but it might be empty)
+        //[Authorize(Roles = "Admin")]
+        [ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(IEnumerable<AllEmployeesQueryResult>), StatusCodes.Status200OK)]
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(BrowseResult<EmployeeDTO>))]
         public async Task<IActionResult> GetOrders([FromQuery] int page = 1)
         {
-            var orders = await _mediator.Send(new GetEmployeesQuery(page));
+            return Ok(await _mediator.Send(query));
+        }
 
-            return Ok(orders);
+        [HttpPut]
+        public async Task<IActionResult> ChangeName([FromBody] ChangeEmployeeNameCommand command)
+        {
+            return Ok(await _mediator.Send(command));
         }
     }
 }

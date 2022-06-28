@@ -1,4 +1,8 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using FluentValidation.Results;
+using MediatR;
+using System.Linq.Expressions;
+using static Shared.CQRSInfrastructure;
 
 namespace Shared
 {
@@ -38,5 +42,68 @@ namespace Shared
         {
 
         }
+
+        public class AppException : Exception
+        {
+            public string? Code { get; set; }
+            public AppException(string message, string? code = null) : base(message)
+            {
+                Code = code;
+            }
+        }
     }
+    public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : MediatR.IRequest<TResponse>
+    {
+        public LoggingBehavior()
+        {
+        }
+
+        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+        {
+            Console.WriteLine($"Handling {typeof(TRequest).Name}");
+            var response = await next();
+            Console.WriteLine($"Handled {typeof(TResponse).Name}");
+
+            return response;
+        }
+    }
+
+    public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : MediatR.IRequest<TResponse>
+    {
+        public ValidationBehavior()
+        {
+        }
+
+        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+        {
+            var typeToCheck = typeof(AbstractValidator<>).MakeGenericType(request.GetType());
+
+            var validatorType = request.GetType().Assembly.GetTypes()
+                .Where(x => typeToCheck.IsAssignableFrom(x))
+                .FirstOrDefault();
+
+            if (validatorType != null)
+            {
+                var _delegate = Expression.Lambda(Expression.New(validatorType)).Compile();
+                var validatorInstance = _delegate.DynamicInvoke();
+
+                var validateMethod = validatorInstance.GetType().GetMethod("Validate", new[] { request.GetType() });
+                var result = validateMethod.Invoke(validatorInstance, new object[] { request }) as ValidationResult;
+
+                if (!result.IsValid)
+                {
+                    throw new AppException(result.Errors.FirstOrDefault()?.ErrorMessage);
+                }
+            }
+
+            Console.WriteLine($"Validate {typeof(TRequest).Name}");
+
+            var response = await next();
+
+            Console.WriteLine($"Handled {typeof(TResponse).Name}");
+
+            return response;
+        }
+    }
+
 }

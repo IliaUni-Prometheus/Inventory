@@ -1,3 +1,4 @@
+using Application;
 using Application.Features.EmployeeFeatures.Queries;
 using Application.Helpers;
 using Application.Services.Abstract;
@@ -7,17 +8,21 @@ using Domain.Models.Abstraction;
 using Infrastructure.Models;
 using Infrastructure.Repositories;
 using Inventory.Authorization;
+using Inventory.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Shared;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+
+//builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(s =>
@@ -63,6 +68,10 @@ builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSet
 builder.Services.AddScoped<IJwtUtils, JwtUtils>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddDbContext<NorthwindContext>();
+
+builder.Services.AddMediatR(typeof(IApplication).Assembly)
+    .AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>))
+    .AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
@@ -82,6 +91,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                          IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("he4s$Y2$#d%%B^nxdvp*H76UA_M#53!E!Dzp"))
                      };
                  });
+
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<HttpGlobalExceptionFilter>();
+}).AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
 
 var app = builder.Build();
 
@@ -107,9 +122,9 @@ app.Run();
 
 static void SeedUsers(WebApplication app)
 {
-    using var servicescope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
+    using var servicescope = app.Services.CreateScope();
 
-    var db = servicescope.ServiceProvider.GetService<NorthwindContext>();
+    var db = servicescope.ServiceProvider.GetRequiredService<NorthwindContext>();
 
     var users = new List<User>()
     {
