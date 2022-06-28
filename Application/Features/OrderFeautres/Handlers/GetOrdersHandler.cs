@@ -17,7 +17,7 @@ namespace Application.Features.OrderFeautres.Handlers
             var itemsPerPage = 10f;
 
             // fetch orders and map it to DTO
-            var orders = (await _repo.RetrieveAllAsync(request.Page, (int)itemsPerPage))
+            var orders = (await _repo.RetrieveAllAsync(request.Page, request.PageSize))
                 .Select(o => new OrderDTO()
                 {
                     OrderId = o.OrderId,
@@ -33,7 +33,7 @@ namespace Application.Features.OrderFeautres.Handlers
 
             return new BrowseResult<OrderDTO>()
             {
-                Orders = orders.ToList(),
+                Data = orders.ToList(),
                 Pages = (int)pageCount,
                 CurrentPage = request.Page
             };

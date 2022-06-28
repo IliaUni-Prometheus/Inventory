@@ -33,7 +33,7 @@ namespace Application.Features.EmployeeFeatures.Handlers
 
             return new BrowseResult<EmployeeDTO>()
             {
-                Orders = employees.ToList(),
+                Data = employees.ToList(),
                 Pages = (int)pageCount,
                 CurrentPage = request.Page
             };

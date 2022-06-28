@@ -12,6 +12,10 @@ namespace ClientSide.Shared
         public List<T> Items { get; set; }
         [Parameter]
         public int CurrentPage { get; set; }
+
+        [Parameter]
+        public int PageSize { get; set; }
+
         [Parameter]
         public int PageCount { get; set; }
         [Parameter]
@@ -19,6 +23,7 @@ namespace ClientSide.Shared
 
         private int _startPageIndex = 1;
         private int _endPageIndex = 1;
+
 
         protected override void OnParametersSet()
         {

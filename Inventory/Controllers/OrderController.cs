@@ -17,9 +17,9 @@ namespace Inventory.Controllers
         // this will always return list of orders (but it might be empty)
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(BrowseResult<OrderDTO>))]
-        public async Task<IActionResult> GetOrders([FromQuery] int page = 1)
+        public async Task<IActionResult> GetOrders([FromQuery] int page = 1, int pageSize = 10)
         {
-            var orders = await _mediator.Send(new GetOrdersQuery(page));
+            var orders = await _mediator.Send(new GetOrdersQuery(page, pageSize));
 
             return Ok(orders);
         }

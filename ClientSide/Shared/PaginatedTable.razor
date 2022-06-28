@@ -11,7 +11,9 @@
         </tr>
     </thead>
     <tbody>
-        @{int index = 1;}
+        @{
+            int index = (PageSize * CurrentPage) - (PageSize - 1);
+        }
         @foreach (T item in Items)
         {
             <tr>
