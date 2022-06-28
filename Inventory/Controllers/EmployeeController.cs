@@ -4,6 +4,7 @@ using Inventory.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shared;
 using Shared.DTOs;
 
 namespace Inventory.Controllers

@@ -16,6 +16,11 @@ namespace ClientSide.Pages
         private int _pageCount = 0;
         private int _pageSize = 10;
 
+        public bool HasError { get; set; }
+        public string ErrorMessage { get; set; }
+        public string ErrorCode { get; set; }
+
+
 
         private string[] _columnNames = new string[] { "Order Date", "Freight", "Ship Address", "Postal Code" };
         private string[] _propertyNames = new string[] { "OrderDate", "Freight", "ShipAddress", "ShipPostalCode" };
@@ -53,9 +58,20 @@ namespace ClientSide.Pages
         private async Task FetchOrders(int page, int pageSize)
         {
             var response = await OrderService.GetOrders(page, pageSize);
-            _currentPage = response.CurrentPage;
-            _pageCount = response.Pages;
-            _orders = response.Data;
+
+            if (response.Errors != null)
+            {
+
+                HasError = true;
+                ErrorMessage = response.Errors.Error.Message;
+                ErrorCode = response.Errors.Error.Code;
+            }
+            else
+            {
+                _currentPage = response.Data.CurrentPage;
+                _pageCount = response.Data.Pages;
+                _orders = response.Data.Data;
+            }
         }
     }
 }

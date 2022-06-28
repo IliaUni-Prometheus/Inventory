@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Shared;
 using System.Net;
 using static Shared.CQRSInfrastructure;
 
@@ -73,15 +74,5 @@ namespace Inventory.Infrastructure
         }
     }
 
-    public class Error
-    {
-        public string Code { get; set; }
-        public string Message { get; set; }
-    }
 
-    public class ErrorDetails
-    {
-        public int? Status { get; set; }
-        public Error Error { get; set; }
-    }
 }

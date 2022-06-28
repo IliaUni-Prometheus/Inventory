@@ -1,4 +1,5 @@
 ﻿using Application.Features.OrderFeautres.Queries;
+using Domain;
 using Domain.Models.Abstraction;
 using Shared.DTOs;
 using static Shared.CQRSInfrastructure;
